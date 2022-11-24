@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-var subscriptions = Set<AnyCancellable>()
+
 //
 //example(of: "Publisher") {
 //    let myNotification = Notification.Name("MyNotification")
@@ -284,9 +284,39 @@ example(of: "Type erasure") {
     
 }
 
-
-
-
+example(of: "Create a Blackjack card dealer") {
+    let dealtHand = PassthroughSubject<Hand, HandError>()
+    
+    func deal(_ cardCount: UInt) {
+        var deck = cards
+        var cardsRemaing = 52
+        var hand = Hand()
+        
+        for _ in 0 ..< cardCount {
+            let randomIndex = Int.random(in: 0 ..< cardsRemaing)
+            hand.append(deck[randomIndex])
+            deck.remove(at: randomIndex)
+            cardsRemaing -= 1
+        }
+        
+        if hand.points > 21 {
+            dealtHand.send(completion: .failure(.busted))
+        } else {
+            dealtHand.send(hand)
+        }
+    }
+    
+    _ = dealtHand
+        .sink(receiveCompletion: {
+            if case let .failure(error) = $0 {
+                print(error)
+            }
+        }, receiveValue: { hand in
+            print(hand.cardString, "for", hand.points, "points")
+        })
+    
+    deal(3)
+}
 
 
 
