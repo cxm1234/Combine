@@ -6,5 +6,7 @@
         <page name='3_Filtering Operators'/>
         <page name='4_Combining Operators'/>
         <page name='5_SequenceOperators'/>
+        <page name='9_Combine for Networking'/>
+        <page name='10_Debugging Combine'/>
     </pages>
 </playground>
