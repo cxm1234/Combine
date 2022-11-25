@@ -7,10 +7,23 @@
 
 import UIKit
 import Photos
+import Combine
 
 private let reuseIdentifier = "Cell"
 
 class PhotosViewController: UICollectionViewController {
+    
+    @Published var selectedPhotosCount = 0
+    
+    //MARK: - Public properties
+    var selectedPhotos: AnyPublisher<UIImage, Never> {
+        return selectedPhotosSubject.eraseToAnyPublisher()
+    }
+    
+    //MARK: - Private properties
+    private let selectedPhotosSubject = PassthroughSubject<UIImage, Never>()
+    
+    private var subscriptions = Set<AnyCancellable>()
     
     private lazy var photos = PhotosViewController.loadPhotos()
     private lazy var imageManager = PHCachingImageManager()
@@ -26,15 +39,34 @@ class PhotosViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        PHPhotoLibrary.fetchAuthorizationStatus { [weak self] status in
-            if status {
-                self?.photos = PhotosViewController.loadPhotos()
-                
-                DispatchQueue.main.async {
+        PHPhotoLibrary.isAuthorized
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isAuthorized in
+                if isAuthorized {
+                    self?.photos = PhotosViewController.loadPhotos()
                     self?.collectionView.reloadData()
+                } else {
+                    self?.showErrorMessage()
                 }
             }
-        }
+            .store(in: &subscriptions)
+    }
+    
+    
+    func showErrorMessage() {
+        alert(title: "No access to Camera Roll", text: "You can grant access to Collage from the Settings app")
+            .sink { [weak self] _ in
+                self?.dismiss(animated: true, completion: nil)
+                self?.navigationController?.popViewController(animated: true)
+            } receiveValue: { _ in }
+            .store(in: &subscriptions)
+
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        selectedPhotosSubject.send(completion: .finished)
     }
 
     // MARK: UICollectionViewDataSource
@@ -70,6 +102,10 @@ class PhotosViewController: UICollectionViewController {
             if let isThumbnail = info[PHImageResultIsDegradedKey as String] as? Bool, isThumbnail {
                 return 
             }
+            
+            self.selectedPhotosSubject.send(image)
+            
+            self.selectedPhotosCount += 1
         }
     }
 

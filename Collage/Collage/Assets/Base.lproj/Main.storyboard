@@ -36,11 +36,22 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="Yvg-vO-Ggf">
                                 <rect key="frame" x="24" y="244.66666666666663" width="345" height="363"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="P9T-Nd-aMv">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="P9T-Nd-aMv">
                                         <rect key="frame" x="0.0" y="0.0" width="345" height="200"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="200" id="WKD-kt-uKc"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="2"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                                <color key="value" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="rfV-aV-cNd">
                                         <rect key="frame" x="0.0" y="260" width="345" height="103"/>
@@ -102,7 +113,7 @@
         <!--Photos View Controller-->
         <scene sceneID="O8l-hA-bX4">
             <objects>
-                <collectionViewController id="iWO-kx-PXe" customClass="PhotosViewController" customModule="Collage" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="PhotosViewController" id="iWO-kx-PXe" customClass="PhotosViewController" customModule="Collage" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="prototypes" prefetchingEnabled="NO" id="2gv-sU-dPe">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -123,6 +134,11 @@
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yNk-Jq-udn">
                                             <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                         </imageView>
                                     </subviews>
                                     <constraints>
